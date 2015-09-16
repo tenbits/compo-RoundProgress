@@ -1,7 +1,7 @@
 {
-    "name": "compo-RoundProgress",
+    "name": "compo-round-progress",
     "description": "",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "homepage": "http://example.fake",
     "dependencies": {
         "maskjs": "latest"

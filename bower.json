@@ -1,6 +1,6 @@
 {
-	"name": "compo-RoundProgress",
-	"version": "0.5.1",
+	"name": "compo-round-progress",
+	"version": "0.5.2",
 	"dependencies": {
 		"maskjs": ">0.0.0"
 	}
