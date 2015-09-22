@@ -1,35 +1,30 @@
 /*!
  * RoundProgress Component v%IMPORT(version)%
- *
  * MIT license
  * http://opensource.org/licenses/MIT
- *
- * (c) 2012, %IMPORT(year)%
  */
 (function(root, factory){
 	var _global = typeof global !== 'undefined' ? global : window,
 		_mask = _global.mask || (_global.atma && _global.atma.mask);
 
-	if (_mask == null) {
-		if (typeof require === 'function') {
-			mask = require('maskjs');
-		} else {
-			throw Error('MaskJS was not loaded');
-		}
+	if (_mask == null && typeof require === 'function') {
+		_mask = require('maskjs');
 	}
+	if (_mask == null) {
+		throw Error('MaskJS was not loaded');
+	}
+	factory(
+		_global,
+		_mask
+	);
+}(this, function(global, mask){
 
-	factory(_global, _mask, _mask.Compo.config.getDOMLibrary());
-
-}(this, function(global, mask, $){
-
-
-	var Ctor = Compo({
+	mask.define('RoundProgress', mask.Compo({
+		v: '%IMPORT(version)%',
 		meta: {
 			template: 'merge',
 			attributes: {
-				'percent': {
-					'default': 50
-				},
+				'percent': 0,
 				'width': 200,
 				'line-width': 15,
 				'line-cap': 'round',
@@ -103,11 +98,11 @@
 			this.drawLine_(this.xLineColor, this.xPercent);
 		},
 		drawLine_ (color, percent) {
-			var w = this.xWidth;
+			var lineWidth = this.xLineWidth,
+				ctx = this.canvasCtx,
+				w = this.xWidth,
+				radius = (w - lineWidth) / 2;
 
-			var lineWidth = this.xLineWidth;
-			var radius = (w - lineWidth) / 2;
-			var ctx = this.canvasCtx;
 			ctx.beginPath();
 			ctx.arc(0, 0, radius, 0, Math.PI * 2 * (percent / 100), false);
 			ctx.strokeStyle = color;
@@ -115,7 +110,5 @@
 			ctx.lineWidth = lineWidth;
 			ctx.stroke();
 		}
-	});
-
-	mask.define('RoundProgress', Ctor);
+	}));
 }));
