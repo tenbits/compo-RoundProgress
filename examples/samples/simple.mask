@@ -5,12 +5,15 @@ define Foo {
 
 
 	input type=range min=0 max=100 > dualbind value=percent;
-	RoundProgress
-		percent='~[bind: percent]'
-		percent-transition='1s linear'
-		line-color=green
-		title='~[bind: percent] !'
-	;
+	div {
+		RoundProgress
+			percent='~[bind: percent]'
+			percent-transition='1s linear'
+			line-color=green
+			> @title > '~[bind: $.xPercent | 0]'
+		;
+		'Hello'
+	}
 }
 
 Foo;

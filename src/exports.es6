@@ -28,62 +28,66 @@
 			template: 'merge',
 			attributes: {
 				'percent': {
-					'default': 50,
-					'easing': '100ms linear'
+					'default': 50
 				},
 				'width': 200,
 				'line-width': 15,
 				'line-cap': 'round',
 				'line-color': 'cyan',
 				'bg-line-color': '#efefef',
-				'bg-color': 'red',
 				'rotate': 0,
-				'?title': null,
 			},
 			mode: 'client'
 		},
 		tagName: 'div',
 		attr: {
-			'class': 'RoundProgress'
+			'class': 'round-progress',
+			'style': 'width:~[$.xWidth]px; height: ~[$.xWidth]px;'
 		},
-		template: ` div {
-				style scoped {
-					:host {
-						width: 200px;
-						height: 200px;
-						position: relative;
-					}
-					canvas {
-						width: 100%;
-						height: 100%;
-						display: block;
-					}
-					span {
-						display: block;
-						position: absolute;
-						margin: auto;
-						text-align: center;
-						left: 0; right: 0; bottom: 0; top: 0;
-						height: 1.3em;
-						font-weight: bold;
-						font-size: 1.3em;
-					}
+		template: `
+			style {
+				.round-progress {
+					position: relative;
+					display: table;
 				}
-				canvas;
-				span > '~[bind: $.xTitle || (($.xPercent | 0) + "%")]'
+				.round-progress__canvas {
+					display: block;
+					position: absolute;
+					top: 0; left: 0;
+					width: 100%; height: 100%;
+				}
+				.round-progress__title {
+					width: 100%;
+					height: 100%;
+					display: table-cell;
+					vertical-align: middle;
+					text-align: center;
+					font-weight: bold;
+					font-size: 1.3em;
+				}
 			}
+			canvas .round-progress__canvas;
+			span .round-progress__title >
+				@title;
 		`,
 		compos: {
 			canvas: 'canvas',
 			span: 'span'
 		},
-		onRenderEnd (model, ctx, container) {
+		onRenderEnd (els) {
 			this.canvasCtx = this.compos.canvas.getContext('2d');
 		},
 		onEnterFrame () {
 			this.clear_();
 			this.drawBgLine_();
 			this.drawFgLine_();
+		},
+		onAttributeSet (key, val) {
+			if (key === 'width') {
+				var el = this.$[0];
+				el.style.width  = val + 'px';
+				el.style.height = val + 'px';
+			}
 		},
 		clear_ () {
 			var w = this.xWidth;
